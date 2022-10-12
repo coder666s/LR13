@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>лаба 13</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="CSS/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/style.css" />
+</head>
+
+<body>
+
+    <header>
+
+        <p class="Sitename">Моделер</p>
+        <div class="search">Найти модель</div>
+        <button class="Addadetail">Добавить модель</button>
+
+    </header>
+    <main>
+        <div>
+            <p class="Name">Робот</p>
+            <div class="Slider">
+                <div class="SliderSwitch">
+                    <img class="imgSlide"
+                        src="/img/Снимок 1.PNG"
+                        alt="1" >
+                    <img class="imgSlide"
+                    src="/img/Снимок 2.PNG"
+                        alt="2" >
+                    <img class="imgSlide"
+                    src="/img/Снимок 3.PNG"
+                        alt="3" >
+                    <img class="imgSlide"
+                    src="/img/Снимок 4.PNG"
+                        alt="4">
+                </div>
+            </div>
+            <div class="slidebottom">
+                <button class="ButtonPrev">&lt;</button>
+                <img  src="/img/Снимок 1.PNG"
+                    alt="" width="100px">
+                <img  src="/img/Снимок 2.PNG"
+                    alt="" width="100px">
+                <img  src="/img/Снимок 3.PNG"
+                    alt="" width="100px">
+                <img  src="/img/Снимок 4.PNG"
+                    alt="" width="100px">
+                <button class="ButtonNext">&gt;</button>
+            </div>
+
+            <script>
+                let SlideID = document.querySelectorAll(".imgSlide");
+                let Count = SlideID.length;
+                let change = 0;
+                const sliderLine = document.querySelector('.SliderSwitch');
+
+
+                document.querySelector('.ButtonNext').addEventListener('click', function () {
+                    change += 590;
+                    if (change > ((Count - 1) * 590)) {
+                        change = 0;
+                    }
+                    sliderLine.style.left = -change + 'px';
+                });
+
+                document.querySelector('.ButtonPrev').addEventListener('click', function () {
+                    change -= 590;
+                    if (change < 0) {
+                        change = ((Count - 1) * 590);
+                    }
+                    sliderLine.style.left = -change + 'px';
+                });
+            </script>
+
+            <div class="buttonsa">
+                <a href="model.html">Открыть 3D-модель</a>
+            </div>
+        </div>
+        <div class="description">
+            <p>
+                Это робот! Тут его описание)
+            </p>
+
+        </div>
+        <div></div>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anet A8 Rear Frame Brace</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        .threejs {
+            width: 100%;
+            height: 748px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="threejs"></div>
+    <script src="three.js"></script>
+    <script src="STLloader.js"></script>
+    <script>
+
+        const div = document.querySelector('.threejs');
+
+        window.addEventListener('resize', onWindowResize);
+
+        function onWindowResize() {
+
+            camera.aspect = div.clientWidth / div.clientHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(div.clientWidth, div.clientHeight);
+
+        }
+        const clock = new THREE.Clock();
+
+        let mesh;
+        const scene = new THREE.Scene();
+
+        const fov = 30;
+        const aspect = 2;
+        const near = 0.1;
+        const far = 5;
+        const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+
+        camera.position.set(3, 0.9, 3);
+        cameraTarget = new THREE.Vector3(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(div.clientWidth, div.clientHeight);
+
+        div.appendChild(renderer.domElement);
+        renderer.shadowMap.enabled = true;
+
+        scene.background = new THREE.Color('#75bbfd');
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(-25, 25, -25);
+        directionalLight.castShadow = true;
+
+        directionalLight.shadow.mapSize.width = 5000;
+        directionalLight.shadow.mapSize.height = 5000;
+        directionalLight.shadow.camera.top = 10;
+        directionalLight.shadow.camera.bottom = - 10;
+        directionalLight.shadow.camera.left = - 10;
+        directionalLight.shadow.camera.right = 10;
+        scene.add(directionalLight);
+
+        const light = new THREE.PointLight(0xffff, 1, 5);
+        light.position.set(1, 4, 1);
+        scene.add(light);
+
+        const gridHelper = new THREE.GridHelper(2, 2);
+        scene.add(gridHelper);
+
+        const plane = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 2),
+            new THREE.MeshPhongMaterial({ color: "#008000" })
+        );
+        plane.rotation.x = - Math.PI / 2;
+        plane.receiveShadow = true;
+        scene.add(plane);
+
+        const loader = new STLLoader();
+        loader.load('/models/unversal V_1.0_animation_1.stl', function (geometry) {
+
+            const material = new THREE.MeshPhongMaterial({ color: '#FFA500' });
+            mesh = new THREE.Mesh(geometry, material);
+
+            let box = new THREE.Box3();
+            let size = new THREE.Vector3();
+
+            box.setFromObject(mesh).getSize(size);
+            mesh.scale.set(0.5 / size.y, 0.5 / size.y, 0.5 / size.y);
+
+            mesh.position.set(0, 0, 0);
+            mesh.rotation.x = 11;
+
+            mesh.castShadow = true;
+            scene.add(mesh);
+
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render() {
+
+            const elapsedTime = clock.getElapsedTime()
+
+            camera.position.x = Math.cos(elapsedTime * 0.5) * 3.5;
+            camera.position.z = Math.sin(elapsedTime * 0.5) * 3.5;
+
+            camera.lookAt(cameraTarget);
+            renderer.render(scene, camera);
+
+        }
+
+        animate();
+
+    </script>
+
+</body>
+
+</html>
